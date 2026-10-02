@@ -1,0 +1,598 @@
+/* ============================================================
+   Finance Tracker — styles.css
+   Single stylesheet: reset, variables, layout, components
+   ============================================================ */
+
+/* ── 1. CSS Custom Properties (Light Theme) ── */
+:root {
+  --clr-bg:          #f0f4f8;
+  --clr-surface:     #ffffff;
+  --clr-surface-alt: #f7fafc;
+  --clr-border:      #e2e8f0;
+  --clr-text:        #1a202c;
+  --clr-text-muted:  #718096;
+  --clr-primary:     #4f46e5;
+  --clr-primary-h:   #4338ca;
+  --clr-secondary:   #6b7280;
+  --clr-income:      #10b981;
+  --clr-expense:     #ef4444;
+  --clr-warning:     #f59e0b;
+  --clr-warning-bg:  #fffbeb;
+  --clr-warning-brd: #fcd34d;
+  --clr-over-limit:  #fee2e2;
+  --clr-over-text:   #b91c1c;
+  --shadow-sm:       0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:       0 4px 12px rgba(0,0,0,.10);
+  --radius:          12px;
+  --radius-sm:       8px;
+  --transition:      0.2s ease;
+  --font:            'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ── 2. Dark Theme ── */
+body.dark {
+  --clr-bg:          #0f172a;
+  --clr-surface:     #1e293b;
+  --clr-surface-alt: #263244;
+  --clr-border:      #334155;
+  --clr-text:        #f1f5f9;
+  --clr-text-muted:  #94a3b8;
+  --clr-primary:     #818cf8;
+  --clr-primary-h:   #6366f1;
+  --clr-secondary:   #94a3b8;
+  --clr-income:      #34d399;
+  --clr-expense:     #f87171;
+  --clr-warning:     #fbbf24;
+  --clr-warning-bg:  #1c1500;
+  --clr-warning-brd: #92400e;
+  --clr-over-limit:  #3b0000;
+  --clr-over-text:   #fca5a5;
+  --shadow-sm:       0 1px 3px rgba(0,0,0,.3);
+  --shadow-md:       0 4px 12px rgba(0,0,0,.4);
+}
+
+/* ── 3. Reset & Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ── 4. Header ── */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: var(--clr-surface);
+  border-bottom: 1px solid var(--clr-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--clr-primary);
+}
+
+/* ── 5. Layout ── */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.left-col,
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── 6. Cards ── */
+.card {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--clr-text-muted);
+  margin-bottom: 1rem;
+}
+
+/* ── 7. Balance Section ── */
+.balance-section {
+  margin-top: 0.25rem;
+}
+
+.balance-card {
+  background: linear-gradient(135deg, var(--clr-primary) 0%, #7c3aed 100%);
+  border-radius: var(--radius);
+  padding: 1.75rem 2rem;
+  color: #fff;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.balance-label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.85;
+  margin-bottom: 0.4rem;
+}
+
+.balance-amount {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+
+.balance-meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+
+.meta-income strong { color: #86efac; }
+.meta-expense strong { color: #fca5a5; }
+
+/* ── 8. Limit Alert ── */
+.limit-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--clr-warning-bg);
+  border: 1px solid var(--clr-warning-brd);
+  border-radius: var(--radius-sm);
+  color: var(--clr-warning);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.limit-alert.hidden { display: none; }
+
+/* ── 9. Form ── */
+.form-group {
+  margin-bottom: 0.9rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-surface-alt);
+  color: var(--clr-text);
+  font-size: 0.95rem;
+  font-family: var(--font);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.15);
+}
+
+.form-group input.error,
+.form-group select.error {
+  border-color: var(--clr-expense);
+}
+
+.field-error {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--clr-expense);
+  margin-top: 0.2rem;
+  min-height: 1em;
+}
+
+/* ── 10. Buttons ── */
+.btn-primary {
+  width: 100%;
+  padding: 0.7rem;
+  background: var(--clr-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition), transform 0.1s;
+  margin-top: 0.25rem;
+}
+
+.btn-primary:hover  { background: var(--clr-primary-h); }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  background: var(--clr-surface-alt);
+  color: var(--clr-text);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.btn-secondary:hover {
+  background: var(--clr-border);
+}
+
+.btn-icon {
+  background: transparent;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.6rem;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--clr-text);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.btn-icon:hover { background: var(--clr-surface-alt); }
+
+/* ── 11. Custom Category ── */
+.custom-category-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.custom-category-row input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-surface-alt);
+  color: var(--clr-text);
+  font-size: 0.9rem;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.custom-category-row input:focus { border-color: var(--clr-primary); }
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.65rem;
+  background: var(--clr-surface-alt);
+  border: 1px solid var(--clr-border);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--clr-text);
+}
+
+.tag button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--clr-text-muted);
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0;
+  transition: color var(--transition);
+}
+
+.tag button:hover { color: var(--clr-expense); }
+
+/* ── 12. Spending Limit ── */
+.limit-display {
+  margin-top: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--clr-text-muted);
+}
+
+/* ── 13. Chart ── */
+.chart-card { }
+
+.chart-wrapper {
+  position: relative;
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+.chart-empty {
+  text-align: center;
+  color: var(--clr-text-muted);
+  font-size: 0.9rem;
+  padding: 2rem 0;
+}
+
+/* ── 14. Monthly Summary ── */
+.summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.summary-header .card-title { margin-bottom: 0; }
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.month-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--clr-text);
+  min-width: 90px;
+  text-align: center;
+}
+
+.summary-content {
+  font-size: 0.9rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--clr-border);
+}
+
+.summary-row:last-child { border-bottom: none; }
+
+.summary-row .s-label { color: var(--clr-text-muted); }
+
+.summary-row .s-income  { color: var(--clr-income);  font-weight: 600; }
+.summary-row .s-expense { color: var(--clr-expense); font-weight: 600; }
+.summary-row .s-balance { font-weight: 700; }
+
+.summary-cat-list {
+  margin-top: 0.75rem;
+}
+
+.summary-cat-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+  border-bottom: 1px dashed var(--clr-border);
+}
+
+.summary-cat-item:last-child { border-bottom: none; }
+.summary-empty { color: var(--clr-text-muted); font-size: 0.9rem; }
+
+/* ── 15. Transaction List ── */
+.transaction-section { margin-top: 1.25rem; }
+
+.transaction-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.transaction-header .card-title { margin-bottom: 0; }
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--clr-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sort-controls select {
+  padding: 0.35rem 0.6rem;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-surface-alt);
+  color: var(--clr-text);
+  font-size: 0.85rem;
+  font-family: var(--font);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.sort-controls select:focus { border-color: var(--clr-primary); }
+
+.transaction-list {
+  max-height: 480px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-right: 0.25rem;
+}
+
+/* Custom scrollbar */
+.transaction-list::-webkit-scrollbar { width: 5px; }
+.transaction-list::-webkit-scrollbar-track { background: transparent; }
+.transaction-list::-webkit-scrollbar-thumb {
+  background: var(--clr-border);
+  border-radius: 99px;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--clr-text-muted);
+  font-size: 0.95rem;
+  padding: 2.5rem 0;
+}
+
+/* ── 16. Transaction Item ── */
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--clr-surface-alt);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition), border-color var(--transition), transform 0.15s;
+  animation: slideIn 0.2s ease;
+}
+
+.transaction-item:hover { transform: translateX(2px); }
+
+/* Over-limit highlight */
+.transaction-item.over-limit {
+  background: var(--clr-over-limit);
+  border-color: var(--clr-expense);
+}
+
+.transaction-item.over-limit .t-amount {
+  color: var(--clr-over-text) !important;
+}
+
+.t-icon {
+  font-size: 1.3rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--clr-surface);
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.t-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.t-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.t-meta {
+  font-size: 0.78rem;
+  color: var(--clr-text-muted);
+  margin-top: 0.1rem;
+}
+
+.t-amount {
+  font-size: 1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.t-amount.income  { color: var(--clr-income); }
+.t-amount.expense { color: var(--clr-expense); }
+
+.t-delete {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--clr-text-muted);
+  font-size: 1rem;
+  padding: 0.2rem;
+  border-radius: 4px;
+  transition: color var(--transition), background var(--transition);
+  flex-shrink: 0;
+}
+
+.t-delete:hover {
+  color: var(--clr-expense);
+  background: rgba(239,68,68,.1);
+}
+
+/* ── 17. Footer ── */
+.app-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.8rem;
+  color: var(--clr-text-muted);
+  border-top: 1px solid var(--clr-border);
+}
+
+/* ── 18. Animations ── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 19. Responsive ── */
+@media (max-width: 900px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .balance-amount { font-size: 2rem; }
+  .balance-meta   { flex-direction: column; gap: 0.4rem; }
+  .transaction-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .summary-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .app-header { padding: 0.6rem 1rem; }
+  .container { padding: 1rem 0.75rem 2.5rem; }
+}

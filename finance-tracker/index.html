@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Tracker</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="light">
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-left">
+      <span class="logo">💰 Finance Tracker</span>
+    </div>
+    <div class="header-right">
+      <button id="themeToggle" class="btn-icon" title="Toggle dark/light mode" aria-label="Toggle theme">
+        🌙
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Balance Card -->
+    <section class="balance-section" aria-label="Total Balance">
+      <div class="balance-card">
+        <p class="balance-label">Total Balance</p>
+        <h1 class="balance-amount" id="totalBalance">$0.00</h1>
+        <div class="balance-meta">
+          <span class="meta-income">↑ Income: <strong id="totalIncome">$0.00</strong></span>
+          <span class="meta-expense">↓ Expenses: <strong id="totalExpenses">$0.00</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spending Limit Alert -->
+    <div id="limitAlert" class="limit-alert hidden" role="alert">
+      ⚠️ You've exceeded your monthly spending limit!
+    </div>
+
+    <div class="main-grid">
+
+      <!-- Left Column -->
+      <div class="left-col">
+
+        <!-- Add Transaction Form -->
+        <section class="card" aria-label="Add Transaction">
+          <h2 class="card-title">Add Transaction</h2>
+          <form id="transactionForm" novalidate>
+
+            <div class="form-group">
+              <label for="itemName">Item Name</label>
+              <input type="text" id="itemName" placeholder="e.g. Grocery run" autocomplete="off" />
+              <span class="field-error" id="itemNameError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="amount">Amount ($)</label>
+              <input type="number" id="amount" placeholder="0.00" step="0.01" min="0" />
+              <span class="field-error" id="amountError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="type">Type</label>
+              <select id="type">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category">
+                <option value="Food">🍔 Food</option>
+                <option value="Transport">🚗 Transport</option>
+                <option value="Fun">🎮 Fun</option>
+                <option value="Health">💊 Health</option>
+                <option value="Shopping">🛍️ Shopping</option>
+                <option value="Bills">💡 Bills</option>
+                <option value="Income">💼 Income</option>
+              </select>
+              <span class="field-error" id="categoryError"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" id="date" />
+            </div>
+
+            <button type="submit" class="btn-primary">+ Add Transaction</button>
+          </form>
+        </section>
+
+        <!-- Custom Category -->
+        <section class="card" aria-label="Add Custom Category">
+          <h2 class="card-title">Custom Category</h2>
+          <div class="custom-category-row">
+            <input type="text" id="customCategoryInput" placeholder="e.g. Gym, Pets..." />
+            <button id="addCategoryBtn" class="btn-secondary">Add</button>
+          </div>
+          <div id="customCategoryList" class="tag-list"></div>
+        </section>
+
+        <!-- Spending Limit -->
+        <section class="card" aria-label="Spending Limit">
+          <h2 class="card-title">Monthly Spending Limit</h2>
+          <div class="custom-category-row">
+            <input type="number" id="spendingLimitInput" placeholder="e.g. 500" min="0" step="1" />
+            <button id="setLimitBtn" class="btn-secondary">Set</button>
+          </div>
+          <p id="limitDisplay" class="limit-display"></p>
+        </section>
+
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+
+        <!-- Pie Chart -->
+        <section class="card chart-card" aria-label="Spending Chart">
+          <h2 class="card-title">Spending by Category</h2>
+          <div class="chart-wrapper">
+            <canvas id="spendingChart" aria-label="Pie chart of spending by category" role="img"></canvas>
+            <p id="chartEmpty" class="chart-empty">No expense data yet.</p>
+          </div>
+        </section>
+
+        <!-- Monthly Summary -->
+        <section class="card" aria-label="Monthly Summary">
+          <div class="summary-header">
+            <h2 class="card-title">Monthly Summary</h2>
+            <div class="month-nav">
+              <button id="prevMonth" class="btn-icon" title="Previous month">◀</button>
+              <span id="currentMonthLabel" class="month-label"></span>
+              <button id="nextMonth" class="btn-icon" title="Next month">▶</button>
+            </div>
+          </div>
+          <div id="monthlySummaryContent" class="summary-content"></div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Transaction List -->
+    <section class="card transaction-section" aria-label="Transactions">
+      <div class="transaction-header">
+        <h2 class="card-title">Transactions</h2>
+        <div class="sort-controls">
+          <label for="sortBy">Sort by:</label>
+          <select id="sortBy">
+            <option value="date-desc">Date (Newest)</option>
+            <option value="date-asc">Date (Oldest)</option>
+            <option value="amount-desc">Amount (High→Low)</option>
+            <option value="amount-asc">Amount (Low→High)</option>
+            <option value="category">Category</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="transactionList" class="transaction-list" role="list">
+        <p id="emptyState" class="empty-state">No transactions yet. Add one above!</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Finance Tracker &mdash; All data stored locally in your browser.</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
